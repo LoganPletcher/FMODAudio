@@ -5,34 +5,23 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 
-class Program
-    {
-        static void Main(string[] args)
-        {
 
-        }
+class Program
+{
+    static void Main(string[] args)
+    {
+        MusicPlayer.Init();
+        MusicPlayer.Instance.Play(MusicPlayer.JAGUAR);
+        Console.Beep();
+        MusicPlayer.Instance.Unload();
     }
+}
 
     public class MusicPlayer
     {
-        public const int NUM_SONGS = 14;
+        public const int NUM_SONGS = 2;
 
-        public const int SONG_TITLE_MENU = 0;
-
-        public const int SONG_SECTOR_MAP = 1;
-
-        public const int SONG_DESERT = 2;
-        public const int SONG_FOREST = 3;
-        public const int SONG_OCEAN = 4;
-        public const int SONG_BARREN = 5;
-        public const int SONG_ICE = 6;
-        public const int SONG_LAVA = 7;
-        public const int SONG_MINING = 8;
-        public const int SONG_ASTEROID_BELT = 9;
-        public const int SONG_ENCOUNTER_HUMAN = 10;
-        public const int SONG_ENCOUNTER_CYBORG = 11;
-        public const int SONG_ENCOUNTER_AI = 12;
-        public const int SONG_ENCOUNTER_ALIEN = 13;
+        public const int JAGUAR = 1;
 
         private FMOD.System FMODSystem;
         private FMOD.Channel Channel;
@@ -69,26 +58,14 @@ class Program
 
             Songs = new FMOD.Sound[NUM_SONGS];
 
-            //LoadSong(SONG_TITLE_MENU, "");
-            LoadSong(SONG_SECTOR_MAP, "Set a Course [Seamless]");
-            LoadSong(SONG_DESERT, "Uncharted Expanse [Seamless]");
-            LoadSong(SONG_FOREST, "Mystic Depths [Seamless]");
-            LoadSong(SONG_OCEAN, "Dreamscape (Mysterious Space Edit)");
-            //LoadSong(SONG_BARREN, "");
-            LoadSong(SONG_ICE, "Always (Mysterious Space Edit)");
-            LoadSong(SONG_LAVA, "Afterglow [Seamless]");
-            LoadSong(SONG_MINING, "Eternal Excavation");
-            LoadSong(SONG_ASTEROID_BELT, "Not the Same Level (Mysterious Space Edit)");
-            //LoadSong(SONG_ENCOUNTER_HUMAN, "");
-            //LoadSong(SONG_ENCOUNTER_CYBORG, "");
-            //LoadSong(SONG_ENCOUNTER_AI, "");
-            //LoadSong(SONG_ENCOUNTER_ALIEN, "");
+            LoadSong(JAGUAR, "jaguar");
         }
 
         private void LoadSong(int songId, string name)
         {
+        //Figure out directory path.
             FMOD.RESULT r = FMODSystem.createStream("Content/Music/" + name + ".flac", FMOD.MODE.DEFAULT, out Songs[songId]);
-            //Console.WriteLine("loading " + songId + ", got result " + r);
+            Console.WriteLine("loading " + songId + ", got result " + r);
         }
 
         private int _current_song_id;
@@ -114,7 +91,7 @@ class Program
                 if (songId >= 0 && songId < NUM_SONGS && Songs[songId] != null)
                 {
                     FMODSystem.playSound(Songs[songId], null, false, out Channel);
-                    UpdateVolume();
+                    //UpdateVolume();
                     Channel.setMode(FMOD.MODE.LOOP_NORMAL);
                     Channel.setLoopCount(-1);
 
@@ -125,8 +102,8 @@ class Program
 
         public void UpdateVolume()
         {
-            if (Channel != null)
-                Channel.setVolume(Settings.GetInstance().MusicVolume / 100f);
+            if (Channel != null) { }
+                //Channel.setVolume(Settings.GetInstance().MusicVolume / 100f);
         }
 
         public void Stop()
